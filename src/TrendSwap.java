@@ -10,14 +10,14 @@ import java.util.List;
  * <p/>
  * Created by James Frost on 25/10/2014.
  */
-public class twitterSentimentBot implements Constants {
+public class TrendSwap implements Constants {
 
     //number of tweets with sentiment for a particular trend.
     private int negative;
     private int neutral;
     private int positive;
 
-    public twitterSentimentBot() {
+    public TrendSwap() {
 
         TwitterHelper twitterHelper = new TwitterHelper();
         ApiHelper apiHelper = new ApiHelper();
@@ -91,6 +91,6 @@ public class twitterSentimentBot implements Constants {
     }
 
     public static void main(String[] args) throws TwitterException {
-        new twitterSentimentBot();
+        new TrendSwap();
     }
 }
