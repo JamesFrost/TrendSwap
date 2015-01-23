@@ -2,7 +2,7 @@ import twitter4j.*;
 
 /**
  * Handles all interactions with Twitter.
- *
+ * <p/>
  * Created by James Frost on 30/10/2014.
  */
 public class TwitterHelper implements Constants {
@@ -10,12 +10,13 @@ public class TwitterHelper implements Constants {
     /**
      * Gets tweets for a specific trend.
      *
-     * @param query The search term
+     * @param trend The search term
      * @return Tweets found using the search term
      */
-    public QueryResult getTweets(Query query) {
+    public QueryResult getTweets(String trend, int numberOfTweets) {
+        Query query = new Query(trend);
         Twitter twitter = new TwitterFactory().getInstance();
-        query.count(NUMBER_OF_TWEETS);
+        query.count(numberOfTweets);
         try {
             return twitter.search(query);
         } catch (TwitterException e) {
@@ -50,12 +51,11 @@ public class TwitterHelper implements Constants {
     /**
      * Sends a tweet.
      *
-     * @param text The text to tweet
+     * @param tweet The text to tweet
      * @throws TwitterException
      */
-    public void tweet(String text) throws TwitterException {
+    public static void tweet(StatusUpdate tweet) throws TwitterException {
         Twitter twitter = new TwitterFactory().getInstance();
-        StatusUpdate stat = new StatusUpdate(text);
-        twitter.updateStatus(stat);
+        twitter.updateStatus(tweet);
     }
 }
