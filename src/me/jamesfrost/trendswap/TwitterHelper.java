@@ -1,3 +1,5 @@
+package me.jamesfrost.trendswap;
+
 import twitter4j.*;
 
 /**
@@ -17,6 +19,7 @@ public class TwitterHelper implements Constants {
         Query query = new Query(trend);
         Twitter twitter = new TwitterFactory().getInstance();
         query.count(numberOfTweets);
+        query.resultType(Query.ResultType.popular);
         try {
             return twitter.search(query);
         } catch (TwitterException e) {

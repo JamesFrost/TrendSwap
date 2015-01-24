@@ -1,7 +1,8 @@
+package me.jamesfrost.trendswap;
+
 import twitter4j.QueryResult;
 import twitter4j.Status;
 import twitter4j.Trend;
-import twitter4j.Trends;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +13,10 @@ import java.util.List;
 public class Collector {
 
     public static ArrayList<Haystack> collect() {
+
         ArrayList<String> swapableTrends = new ArrayList<String>();
         TwitterHelper twitterHelper = new TwitterHelper();
-        Trends trends = twitterHelper.getTrends();
-        Trend[] currentTrends = trends.getTrends();
+        Trend[] currentTrends = twitterHelper.getTrends().getTrends();
 
         for (Trend currentTrend : currentTrends) {
             String tmp = currentTrend.getName();
@@ -24,19 +25,19 @@ public class Collector {
             }
         }
 
-        ArrayList<Haystack> tweets = new ArrayList<Haystack>();
+        ArrayList<Haystack> harvestedTweets = new ArrayList<Haystack>();
 
-        for(String trend : swapableTrends) {
+        for (String trend : swapableTrends) {
             QueryResult queryResult = twitterHelper.getTweets(trend, swapableTrends.size());
             List<Status> trendTweets = queryResult.getTweets();
 
             ArrayList<Status> tmp = new ArrayList<Status>();
 
-            for(int i = 0; i < swapableTrends.size(); ++i) {
+            for (int i = 0; i < swapableTrends.size(); ++i)
                 tmp.add(trendTweets.get(i));
-            }
-            tweets.add(new Haystack(tmp, trend));
+
+            harvestedTweets.add(new Haystack(trend, tmp));
         }
-        return tweets;
+        return harvestedTweets;
     }
 }

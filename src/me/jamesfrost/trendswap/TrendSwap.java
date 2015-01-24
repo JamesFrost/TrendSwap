@@ -1,3 +1,5 @@
+package me.jamesfrost.trendswap;
+
 import twitter4j.TwitterException;
 
 /**

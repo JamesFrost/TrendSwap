@@ -1,3 +1,5 @@
+package me.jamesfrost.trendswap;
+
 import twitter4j.Status;
 
 import java.util.ArrayList;
@@ -10,7 +12,7 @@ public class Haystack {
     private ArrayList<Status> tweets;
     private String trend;
 
-    public Haystack(ArrayList<Status> tweets, String trend) {
+    public Haystack(String trend, ArrayList<Status> tweets) {
         this.tweets = tweets;
         this.trend = trend;
     }

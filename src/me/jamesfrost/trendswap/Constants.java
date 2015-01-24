@@ -1,3 +1,5 @@
+package me.jamesfrost.trendswap;
+
 /**
  * Holds all constant variables.
  *
