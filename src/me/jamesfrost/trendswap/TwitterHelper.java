@@ -2,6 +2,8 @@ package me.jamesfrost.trendswap;
 
 import twitter4j.*;
 
+import java.util.List;
+
 /**
  * Handles all interactions with Twitter.
  * <p/>
@@ -12,21 +14,41 @@ public class TwitterHelper implements Constants {
     /**
      * Gets tweets for a specific trend.
      *
-     * @param trend The search term
      * @return Tweets found using the search term
      */
-    public QueryResult getTweets(String trend, int numberOfTweets) {
-        Query query = new Query(trend);
-        Twitter twitter = new TwitterFactory().getInstance();
-        query.count(numberOfTweets);
-        query.resultType(Query.ResultType.popular);
+    public List<Status> getNews() {
+
+        List<Status> statuses = null;
         try {
-            return twitter.search(query);
+            Twitter unauthenticatedTwitter = new TwitterFactory().getInstance();
+            Paging paging = new Paging(1, 50);
+            statuses = unauthenticatedTwitter.getUserTimeline("BBCBreaking", paging);
+            for (Status t : statuses) {
+                System.out.println(t.getText());
+            }
         } catch (TwitterException e) {
             e.printStackTrace();
-            return null;
         }
+
+        return statuses;
     }
+
+    public List<Status> getTrendTweet(Trend trend) {
+
+        List<Status> statuses = null;
+        Twitter twitter = new TwitterFactory().getInstance();
+
+        Query query = new Query(trend.getName());
+        query.count(1);
+        query.resultType(Query.ResultType.popular);
+        try {
+            statuses = twitter.search(query).getTweets();
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
+        return statuses;
+    }
+
 
     /**
      * Gets the trends for a specific location.
@@ -37,10 +59,11 @@ public class TwitterHelper implements Constants {
         try {
             Twitter twitter = new TwitterFactory().getInstance();
             Trends trends = twitter.getPlaceTrends(LOCATION_WOEID);
-            System.out.println("Showing available trends");
 
             for (int i = 0; i < trends.getTrends().length; i++) {
-                System.out.println(trends.getTrends()[i].getName());
+                if (trends.getTrends()[i].toString().contains("#")) {
+                    //remove
+                }
             }
 
             return trends;

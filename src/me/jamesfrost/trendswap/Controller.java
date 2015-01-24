@@ -1,8 +1,9 @@
 package me.jamesfrost.trendswap;
 
-import twitter4j.StatusUpdate;
+import twitter4j.Status;
+import twitter4j.Trends;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by James on 21/01/2015.
@@ -13,29 +14,12 @@ public class Controller {
     }
 
     public void run() {
-        ArrayList<Haystack> harvestedTweets = Collector.collect();
+        TwitterHelper twitterHelper = new TwitterHelper();
+        List<Status> headlines = twitterHelper.getNews();
+        Trends trends = twitterHelper.getTrends();
 
-        ArrayList<StatusUpdate> generatedTweets = TweetGenerator.generate(harvestedTweets);
 
-//        int noOfTweets = 0;
-//        for (StatusUpdate tweet : generatedTweets) {
-//            try {
-//                TwitterHelper.tweet(tweet);
-//                ++noOfTweets;
-//
-//            } catch (TwitterException ignored) {
-//
-//            }
-//            if (noOfTweets >= 25)
-//                break;
-//            else {
-//                try {
-//                    Thread.sleep(10000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
+
 
     }
 }
