@@ -25,6 +25,9 @@
         <module name="twitterSentimentBot" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="twitterSentimentBot" target="1.7" />
+    </bytecodeTargetLevel>
   </component>
 </project>
 

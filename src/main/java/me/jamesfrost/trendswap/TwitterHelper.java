@@ -1,6 +1,7 @@
 package me.jamesfrost.trendswap;
 
 import twitter4j.*;
+import twitter4j.conf.ConfigurationBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,16 @@ import java.util.List;
  */
 public class TwitterHelper implements Constants {
 
+    private ConfigurationBuilder getAuth() {
+        ConfigurationBuilder cb = new ConfigurationBuilder();
+        cb.setDebugEnabled(true)
+                .setOAuthConsumerKey("tCguJT4KT1EAjdKaOhD6xLa0H")
+                .setOAuthConsumerSecret("7IxUAbnNJRalmbToj66afgizoBLuDWRdhdakCFE646HuvGf7vz")
+                .setOAuthAccessToken("2985673373-8oFAiRktrOkjhyqzbVmrrfPc3HSW1zq8tt7j4w2")
+                .setOAuthAccessTokenSecret("JrfwTmlrRbhBqzy7rKVlBnQeTbdEFITkadDnx63U2zfDa");
+        return cb;
+    }
+
     /**
      * Gets tweets for a specific trend.
      *
@@ -21,7 +32,7 @@ public class TwitterHelper implements Constants {
 
         List<Status> statuses = null;
         try {
-            Twitter unauthenticatedTwitter = new TwitterFactory().getInstance();
+            Twitter unauthenticatedTwitter = new TwitterFactory(getAuth().build()).getInstance();
             Paging paging = new Paging(1, 50);
             statuses = unauthenticatedTwitter.getUserTimeline("BBCBreaking", paging);
         } catch (TwitterException e) {
@@ -34,7 +45,7 @@ public class TwitterHelper implements Constants {
     public List<Status> getTrendTweet(Trend trend) {
 
         List<Status> statuses = null;
-        Twitter twitter = new TwitterFactory().getInstance();
+        Twitter twitter = new TwitterFactory(getAuth().build()).getInstance();
 
         Query query = new Query(trend.getName());
         query.count(1);
@@ -55,7 +66,7 @@ public class TwitterHelper implements Constants {
      */
     public ArrayList<Trend> getTrends() {
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = new TwitterFactory(getAuth().build()).getInstance();
             Trends trends = twitter.getPlaceTrends(LOCATION_WOEID);
 
             ArrayList<Trend> nonHashTagTrends = new ArrayList<Trend>();
@@ -82,7 +93,7 @@ public class TwitterHelper implements Constants {
      * @throws TwitterException
      */
     public void tweet(StatusUpdate tweet) throws TwitterException {
-        Twitter twitter = new TwitterFactory().getInstance();
+        Twitter twitter = new TwitterFactory(getAuth().build()).getInstance();
         twitter.updateStatus(tweet);
     }
 }

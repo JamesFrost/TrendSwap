@@ -4,7 +4,9 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import twitter4j.Status;
+import twitter4j.StatusUpdate;
 import twitter4j.Trend;
+import twitter4j.TwitterException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,16 +53,19 @@ public class Controller {
 
             if (tmp.contains(trend.getName())) {
                 System.out.println("\nGenerated tweet: \n" + tmp);
-//                try {
-//                    twitterHelper.tweet(new StatusUpdate(tmp));
-//                } catch (TwitterException e) {
-//                    e.printStackTrace();
-//                }
+                try {
+                    twitterHelper.tweet(new StatusUpdate(tmp));
+                    headlines.remove(0);
+                } catch (TwitterException e) {
+                    e.printStackTrace();
+                }
             }
-
-            headlines.remove(0);
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             System.out.println("---------------------------------------------------");
-//            break;
 
         }
 
