@@ -2,6 +2,7 @@ package me.jamesfrost.trendswap;
 
 import twitter4j.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,9 +24,6 @@ public class TwitterHelper implements Constants {
             Twitter unauthenticatedTwitter = new TwitterFactory().getInstance();
             Paging paging = new Paging(1, 50);
             statuses = unauthenticatedTwitter.getUserTimeline("BBCBreaking", paging);
-            for (Status t : statuses) {
-                System.out.println(t.getText());
-            }
         } catch (TwitterException e) {
             e.printStackTrace();
         }
@@ -55,18 +53,21 @@ public class TwitterHelper implements Constants {
      *
      * @return Trends
      */
-    public Trends getTrends() {
+    public ArrayList<Trend> getTrends() {
         try {
             Twitter twitter = new TwitterFactory().getInstance();
             Trends trends = twitter.getPlaceTrends(LOCATION_WOEID);
 
-            for (int i = 0; i < trends.getTrends().length; i++) {
-                if (trends.getTrends()[i].toString().contains("#")) {
-                    //remove
+            ArrayList<Trend> nonHashTagTrends = new ArrayList<Trend>();
+
+            for (int i = 0; i < trends.getTrends().length; ++i) {
+                if (!trends.getTrends()[i].toString().contains("#")) {
+                    nonHashTagTrends.add(trends.getTrends()[i]);
                 }
             }
 
-            return trends;
+
+            return nonHashTagTrends;
         } catch (TwitterException te) {
             te.printStackTrace();
             System.out.println("Failed to get trends: " + te.getMessage());
@@ -80,7 +81,7 @@ public class TwitterHelper implements Constants {
      * @param tweet The text to tweet
      * @throws TwitterException
      */
-    public static void tweet(StatusUpdate tweet) throws TwitterException {
+    public void tweet(StatusUpdate tweet) throws TwitterException {
         Twitter twitter = new TwitterFactory().getInstance();
         twitter.updateStatus(tweet);
     }
