@@ -12,15 +12,15 @@ public class TweetGenerator {
             tmp = originalTweets.replace(needle.replace("# ", "#"), replacement);
         else {
 
-            if(originalTweets.contains(needle))
+            if (originalTweets.contains(needle))
                 tmp = originalTweets.replace(needle, replacement);
-         else
-            tmp = originalTweets.replace(needle.replace(" ", ""), " " +replacement+" ");
+            else
+                tmp = originalTweets.replace(needle.replace(" ", ""), " " + replacement + " ");
         }
 
         tmp = tmp.trim();
         tmp = tmp.replace("#", "");
-        tmp= tmp.replaceAll("\\s+", " ");
+        tmp = tmp.replaceAll("\\s+", " ");
 
         return tmp;
     }

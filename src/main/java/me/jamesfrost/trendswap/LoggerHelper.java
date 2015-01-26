@@ -21,19 +21,8 @@ public class LoggerHelper implements Constants {
     /**
      * Writes log file when tweets sent.
      *
-     * @param numberOfTweets Number of tweets sent
-     * @param tweetedTrends  Trends tweeted about
      */
-    public void log(int numberOfTweets, String[] tweetedTrends) {
-
-        String trends = "";
-
-        for (String tweetedTrend : tweetedTrends) {
-            if (tweetedTrend.equals("")) break;
-            else trends += tweetedTrend + ", ";
-        }
-
-        if (!(trends.equals(""))) trends = trends.substring(0, trends.length() - 2) + ".";
+    public void log(int percentageSuccess) {
 
         try {
             fh = new FileHandler(PATH_TO_LOG_FILE, LOG_FILE_SIZE_LIMIT, 1, true);
@@ -41,10 +30,10 @@ public class LoggerHelper implements Constants {
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);
 
-            if (numberOfTweets == 0)
+            if (percentageSuccess == 0)
                 logger.warning("No tweets sent.");
             else
-                logger.info("Tweets sent: " + numberOfTweets + ". Trends tweeted about: " + trends);
+                logger.info(percentageSuccess + "% swap attempts successful.");
 
         } catch (SecurityException e) {
             e.printStackTrace();

@@ -4,6 +4,7 @@ import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,12 +35,24 @@ public class TwitterHelper implements Constants {
         try {
             Twitter unauthenticatedTwitter = new TwitterFactory(getAuth().build()).getInstance();
             Paging paging = new Paging(1, 50);
-            statuses = unauthenticatedTwitter.getUserTimeline("BBCBreaking", paging);
+            statuses = unauthenticatedTwitter.getUserTimeline("Reuters", paging);
         } catch (TwitterException e) {
             e.printStackTrace();
         }
 
         return statuses;
+    }
+
+    public Date getTimeOfLastTweet() {
+        Twitter twitter = new TwitterFactory(getAuth().build()).getInstance();
+        Date date = null;
+        try {
+            ResponseList<Status> timeline = twitter.getUserTimeline();
+            date = timeline.get(0).getCreatedAt();
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 
     public List<Status> getTrendTweet(Trend trend) {
