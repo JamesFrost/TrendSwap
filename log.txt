@@ -1,2 +1,6 @@
 Jan 26, 2015 4:10:51 PM me.jamesfrost.trendswap.LoggerHelper log
 WARNING: No tweets sent.
+Jan 26, 2015 4:15:02 PM me.jamesfrost.trendswap.LoggerHelper log
+WARNING: No tweets sent.
+Jan 26, 2015 4:15:19 PM me.jamesfrost.trendswap.LoggerHelper log
+WARNING: No tweets sent.

@@ -13,10 +13,11 @@ public class NamedEntityExtractor {
     private String[] acceptableEntities;
 
     public NamedEntityExtractor() {
-        acceptableEntities = new String[3];
+        acceptableEntities = new String[4];
         acceptableEntities[0] = "PERSON";
         acceptableEntities[1] = "LOCATION";
         acceptableEntities[2] = "ORGANIZATION";
+        acceptableEntities[3] = "GPE";
     }
 
     public String extractTrendEntity(String trend, HttpResponse<JsonNode> apiResponce) {
@@ -58,8 +59,12 @@ public class NamedEntityExtractor {
             JSONArray jsonArray = jsonObject.getJSONArray(String.valueOf(keys.get(i)));
 
             if (keys.get(i).toString().equals(entity)) {
-                matchedText = jsonArray.get(0).toString();
-                break;
+                for (int j = 0; j < jsonArray.length(); ++j) {
+                    if (jsonArray.get(j).toString().length() > 1) {
+                        matchedText = jsonArray.get(j).toString();
+                        break;
+                    }
+                }
             }
 
         }

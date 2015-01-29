@@ -19,7 +19,8 @@ public class TweetGenerator {
         }
 
         tmp = tmp.trim();
-        tmp = tmp.replace("#", "");
+        tmp = tmp.replaceAll("#", "");
+        tmp = tmp.replaceAll(":", "");
         tmp = tmp.replaceAll("\\s+", " ");
 
         return tmp;

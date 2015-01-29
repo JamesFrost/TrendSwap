@@ -41,6 +41,10 @@ public class Controller {
 
             if (headlines.get(0).getCreatedAt().before(date))
                 break;
+            if (headlines.get(0).isRetweet()) {
+                headlines.remove(0);
+                continue;
+            }
 
             String headline = headlines.get(0).getText();
             headline = urlRemover.remove(headline);
@@ -51,7 +55,7 @@ public class Controller {
             HttpResponse<JsonNode> apiResponce = apiHelper.makeRequest(twitterHelper.getTrendTweet(trend).get(0).getText());
             String trendEntity = namedEntityExtractor.extractTrendEntity(trend.getName(), apiResponce);
 
-            if(trendEntity == null)
+            if (trendEntity == null)
                 continue;
 
             apiResponce = apiHelper.makeRequest(headline);
@@ -88,6 +92,6 @@ public class Controller {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        new LoggerHelper().log(success / noTrends);
+//        new LoggerHelper().log(success / noTrends);
     }
 }
