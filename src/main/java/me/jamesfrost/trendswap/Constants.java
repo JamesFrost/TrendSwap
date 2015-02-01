@@ -8,5 +8,5 @@ package me.jamesfrost.trendswap;
 public interface Constants {
     public static final int LOCATION_WOEID = 23424975; //woeid of location to get trends for - currently UK
     public static final String NEWS_ACCOUNT = "Reuters"; //Twitter account to get news headlines from
-    public static final String MASHAPE_KEY = "r8XGSVhp35mshOIRMX2zNL4UFcgAp1SxfsYjsnzSc6reBspESZ"; //Mashape Key for API
+    public static final String MASHAPE_KEY = ""; //Mashape Key for API
 }

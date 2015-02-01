@@ -16,11 +16,7 @@ public class TwitterHelper implements Constants {
 
     private ConfigurationBuilder getAuth() {
         ConfigurationBuilder cb = new ConfigurationBuilder();
-        cb.setDebugEnabled(true)
-                .setOAuthConsumerKey("tCguJT4KT1EAjdKaOhD6xLa0H")
-                .setOAuthConsumerSecret("7IxUAbnNJRalmbToj66afgizoBLuDWRdhdakCFE646HuvGf7vz")
-                .setOAuthAccessToken("2985673373-8oFAiRktrOkjhyqzbVmrrfPc3HSW1zq8tt7j4w2")
-                .setOAuthAccessTokenSecret("JrfwTmlrRbhBqzy7rKVlBnQeTbdEFITkadDnx63U2zfDa");
+        //Auth details here
         return cb;
     }
 
