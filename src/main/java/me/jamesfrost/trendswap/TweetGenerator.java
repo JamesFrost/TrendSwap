@@ -1,27 +1,34 @@
 package me.jamesfrost.trendswap;
 
 /**
- * Created by James on 25/01/2015.
+ * Generates tweets.
+ * <p/>
+ * Created by James Frost on 25/01/2015.
  */
 public class TweetGenerator {
 
-    public static String generateTweet(String originalTweets, String needle, String replacement) {
+    /**
+     * Generates a Tweet where
+     *
+     * @param originalTweet
+     * @param needle        Text to search for in the original tweet
+     * @param replacement   Text to replace the needle with
+     * @return Tweet with needle swapped with replace
+     */
+    public static String generateTweet(String originalTweet, String needle, String replacement) {
 
         String tmp;
         if (needle.contains("#"))
-            tmp = originalTweets.replace(needle.replace("# ", "#"), replacement);
+            tmp = originalTweet.replace(needle.replace("# ", "#"), replacement);
         else {
-
-            if (originalTweets.contains(needle))
-                tmp = originalTweets.replace(needle, replacement);
+            if (originalTweet.contains(needle))
+                tmp = originalTweet.replace(needle, replacement);
             else
-                tmp = originalTweets.replace(needle.replace(" ", ""), " " + replacement + " ");
+                tmp = originalTweet.replace(needle.replace(" ", ""), " " + replacement + " ");
         }
 
+        tmp = tmp.replaceAll("#", "").replaceAll(":", "").replaceAll("\\s+", " ");
         tmp = tmp.trim();
-        tmp = tmp.replaceAll("#", "");
-        tmp = tmp.replaceAll(":", "");
-        tmp = tmp.replaceAll("\\s+", " ");
 
         return tmp;
     }

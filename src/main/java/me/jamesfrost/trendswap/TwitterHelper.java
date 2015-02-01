@@ -25,50 +25,55 @@ public class TwitterHelper implements Constants {
     }
 
     /**
-     * Gets tweets for a specific trend.
+     * Gets tweets from a twitter new account.
      *
-     * @return Tweets found using the search term
+     * @return News tweets
      */
     public List<Status> getNews() {
-
-        List<Status> statuses = null;
         try {
             Twitter unauthenticatedTwitter = new TwitterFactory(getAuth().build()).getInstance();
-            Paging paging = new Paging(1, 50);
-            statuses = unauthenticatedTwitter.getUserTimeline("Reuters", paging);
+            return unauthenticatedTwitter.getUserTimeline(NEWS_ACCOUNT, new Paging(1, 50));
         } catch (TwitterException e) {
             e.printStackTrace();
+            return null;
         }
-
-        return statuses;
     }
 
-    public Date getTimeOfLastTweet() {
+    /**
+     * Gets the date of the last tweet on the account.
+     *
+     * @return Date of the last tweet
+     */
+    public Date getDateOfLastTweet() {
         Twitter twitter = new TwitterFactory(getAuth().build()).getInstance();
-        Date date = null;
         try {
             ResponseList<Status> timeline = twitter.getUserTimeline();
-            date = timeline.get(0).getCreatedAt();
+            return timeline.get(0).getCreatedAt();
         } catch (TwitterException e) {
             e.printStackTrace();
+            return null;
         }
-        return date;
     }
 
+    /**
+     * Gets the most popular tweet for a trend.
+     *
+     * @param trend Trend to get the tweet for
+     * @return The most popular tweet for a trend
+     */
     public List<Status> getTrendTweet(Trend trend) {
 
-        List<Status> statuses = null;
         Twitter twitter = new TwitterFactory(getAuth().build()).getInstance();
-
         Query query = new Query(trend.getName());
         query.count(1);
         query.resultType(Query.ResultType.popular);
+
         try {
-            statuses = twitter.search(query).getTweets();
+            return twitter.search(query).getTweets();
         } catch (TwitterException e) {
             e.printStackTrace();
+            return null;
         }
-        return statuses;
     }
 
 
@@ -81,7 +86,6 @@ public class TwitterHelper implements Constants {
         try {
             Twitter twitter = new TwitterFactory(getAuth().build()).getInstance();
             Trends trends = twitter.getPlaceTrends(LOCATION_WOEID);
-
             ArrayList<Trend> nonHashTagTrends = new ArrayList<Trend>();
 
             for (int i = 0; i < trends.getTrends().length; ++i) {
@@ -89,7 +93,6 @@ public class TwitterHelper implements Constants {
                     nonHashTagTrends.add(trends.getTrends()[i]);
                 }
             }
-
 
             return nonHashTagTrends;
         } catch (TwitterException te) {

@@ -6,13 +6,16 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Created by James on 25/01/2015.
+ * Helps process/extract named entities from the API response.
+ * <p/>
+ * Created by James Frost on 25/01/2015.
  */
-public class NamedEntityExtractor {
+public class NamedEntityHelper {
 
+    //All accepted swappable named entities
     private String[] acceptableEntities;
 
-    public NamedEntityExtractor() {
+    public NamedEntityHelper() {
         acceptableEntities = new String[4];
         acceptableEntities[0] = "PERSON";
         acceptableEntities[1] = "LOCATION";
@@ -20,10 +23,17 @@ public class NamedEntityExtractor {
         acceptableEntities[3] = "GPE";
     }
 
-    public String extractTrendEntity(String trend, HttpResponse<JsonNode> apiResponce) {
+    /**
+     * Extracts the trends named entity from the API response.
+     *
+     * @param trend       Trend to get the named entity for
+     * @param apiResponse Response from the API to extract the trend entity out of
+     * @return Trends named entity (null if not found)
+     */
+    public String extractTrendEntity(String trend, HttpResponse<JsonNode> apiResponse) {
 
         String namedEntityFound = null;
-        JSONObject jsonObject = apiResponce.getBody().getObject();
+        JSONObject jsonObject = apiResponse.getBody().getObject();
         JSONArray keys = jsonObject.names();
 
         outerloop:
@@ -33,10 +43,10 @@ public class NamedEntityExtractor {
             for (int j = 0; j < jsonArray.length(); ++j) {
                 if (jsonArray.get(j).equals(trend) && acceptableEntity(keys.get(i).toString())) {
                     namedEntityFound = keys.get(i).toString();
-                    System.out.println("Found!");
                     break outerloop;
                 }
             }
+
         }
         return namedEntityFound;
     }
@@ -49,10 +59,17 @@ public class NamedEntityExtractor {
         return false;
     }
 
-    public String matchEntity(String entity, HttpResponse<JsonNode> apiResponce) {
+    /**
+     * Searches for text the matches a named entity.
+     *
+     * @param entity      Entity to match
+     * @param apiResponse API response to search through
+     * @return Text that matches the named entity passed
+     */
+    public String matchEntity(String entity, HttpResponse<JsonNode> apiResponse) {
 
         String matchedText = null;
-        JSONObject jsonObject = apiResponce.getBody().getObject();
+        JSONObject jsonObject = apiResponse.getBody().getObject();
         JSONArray keys = jsonObject.names();
 
         for (int i = 0; i < jsonObject.length(); ++i) {
@@ -66,11 +83,9 @@ public class NamedEntityExtractor {
                     }
                 }
             }
-
         }
 
         return matchedText;
-
     }
 
 }

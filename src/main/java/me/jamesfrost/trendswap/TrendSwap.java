@@ -3,7 +3,7 @@ package me.jamesfrost.trendswap;
 import twitter4j.TwitterException;
 
 /**
- *
+ * Twitter bot that swaps trends into news headlines.
  * <p/>
  * Created by James Frost on 21/01/2015.
  */

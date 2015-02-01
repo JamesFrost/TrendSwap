@@ -14,32 +14,24 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by James on 21/01/2015.
+ * Trend Swap controller.
+ * <p/>
+ * Created by James Frost on 21/01/2015.
  */
 public class Controller {
 
-    public Controller() {
-    }
-
     public void run() {
 
-        int noTrends;
-        int success = 0;
-
-        NamedEntityExtractor namedEntityExtractor = new NamedEntityExtractor();
-        UrlRemover urlRemover = new UrlRemover();
-        ApiHelper apiHelper = new ApiHelper();
+        NamedEntityHelper namedEntityHelper = new NamedEntityHelper();
         TwitterHelper twitterHelper = new TwitterHelper();
+
         ArrayList<Trend> trends = twitterHelper.getTrends();
         List<Status> headlines = twitterHelper.getNews();
-
-        noTrends = trends.size();
-
-        Date date = twitterHelper.getTimeOfLastTweet();
+        Date dateOfLastTweet = twitterHelper.getDateOfLastTweet();
 
         for (Trend trend : trends) {
 
-            if (headlines.get(0).getCreatedAt().before(date))
+            if (headlines.get(0).getCreatedAt().before(dateOfLastTweet))
                 break;
             if (headlines.get(0).isRetweet()) {
                 headlines.remove(0);
@@ -47,44 +39,36 @@ public class Controller {
             }
 
             String headline = headlines.get(0).getText();
-            headline = urlRemover.remove(headline);
+            headline = UrlRemover.remove(headline);
 
-            System.out.println("Headline: " + headline);
-            System.out.println("Trend Context:" + twitterHelper.getTrendTweet(trend).get(0).getText());
-
-            HttpResponse<JsonNode> apiResponce = apiHelper.makeRequest(twitterHelper.getTrendTweet(trend).get(0).getText());
-            String trendEntity = namedEntityExtractor.extractTrendEntity(trend.getName(), apiResponce);
+            HttpResponse<JsonNode> apiResponce = ApiHelper.makeRequest(twitterHelper.getTrendTweet(trend).get(0).getText());
+            String trendEntity = namedEntityHelper.extractTrendEntity(trend.getName(), apiResponce);
 
             if (trendEntity == null)
                 continue;
 
-            apiResponce = apiHelper.makeRequest(headline);
-            String matchedText = namedEntityExtractor.matchEntity(trendEntity, apiResponce);
-
-            System.out.println("Trend: " + trend.getName());
-            System.out.println("Trend Entity: " + trendEntity);
-            System.out.println("Matched Text: " + matchedText);
+            apiResponce = ApiHelper.makeRequest(headline);
+            String matchedText = namedEntityHelper.matchEntity(trendEntity, apiResponce);
 
             String tmp = "";
             if (matchedText != null)
                 tmp = TweetGenerator.generateTweet(headline, matchedText, trend.getName());
 
             if (tmp.contains(trend.getName())) {
-                System.out.println("\nGenerated tweet: \n" + tmp);
                 try {
                     twitterHelper.tweet(new StatusUpdate(tmp));
                     headlines.remove(0);
-                    ++success;
                 } catch (TwitterException e) {
                     e.printStackTrace();
                 }
             }
+
             try {
                 Thread.sleep(10000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println("---------------------------------------------------");
+
         }
 
         try {
@@ -92,6 +76,6 @@ public class Controller {
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        new LoggerHelper().log(success / noTrends);
+
     }
 }

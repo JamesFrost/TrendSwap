@@ -6,29 +6,32 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
- * Created by James on 24/01/2015.
+ * Handles all communication with the API.
+ * <p/>
+ * Created by James Frost on 24/01/2015.
  */
-public class ApiHelper {
+public class ApiHelper implements Constants {
 
-    public HttpResponse<JsonNode> makeRequest(String text) {
+    /**
+     * Makes a request to the API.
+     *
+     * @param text Text to analyse
+     * @return API response
+     */
+    public static HttpResponse<JsonNode> makeRequest(String text) {
         try {
 
-            HttpResponse<JsonNode> responce = Unirest.post("https://japerk-text-processing.p.mashape.com/phrases/")
-                    .header("X-Mashape-Key", "r8XGSVhp35mshOIRMX2zNL4UFcgAp1SxfsYjsnzSc6reBspESZ")
+            return Unirest.post("https://japerk-text-processing.p.mashape.com/phrases/")
+                    .header("X-Mashape-Key", MASHAPE_KEY)
                     .header("Content-Type", "application/x-www-form-urlencoded")
                     .header("Accept", "application/json")
                     .field("language", "english")
                     .field("text", text)
                     .asJson();
 
-            System.out.println("API Responce: " + responce.getBody().toString());
-
-            return responce;
-
         } catch (UnirestException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
-
 }

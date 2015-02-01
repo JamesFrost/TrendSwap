@@ -7,6 +7,6 @@ package me.jamesfrost.trendswap;
  */
 public interface Constants {
     public static final int LOCATION_WOEID = 23424975; //woeid of location to get trends for - currently UK
-    public static final int LOG_FILE_SIZE_LIMIT = 1000000; // 1 Mb size limit on log file - when reached will flush and start again
-    public static final String PATH_TO_LOG_FILE = "log.txt"; //path to the log file
+    public static final String NEWS_ACCOUNT = "Reuters"; //Twitter account to get news headlines from
+    public static final String MASHAPE_KEY = "r8XGSVhp35mshOIRMX2zNL4UFcgAp1SxfsYjsnzSc6reBspESZ"; //Mashape Key for API
 }
